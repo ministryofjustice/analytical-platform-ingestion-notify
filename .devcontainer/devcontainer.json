@@ -1,5 +1,5 @@
 {
-  "name": "analytical-platform-ingestion-notifier",
+  "name": "analytical-platform-ingestion-notify",
   "image": "ghcr.io/ministryofjustice/devcontainer-base:latest",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},

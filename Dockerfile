@@ -4,8 +4,8 @@ FROM public.ecr.aws/lambda/python:3.12@sha256:1d922f123370801843aad18d0911759c55
 
 LABEL org.opencontainers.image.vendor="Ministry of Justice" \
       org.opencontainers.image.authors="Analytical Platform (analytical-platform@digital.justice.gov.uk)" \
-      org.opencontainers.image.title="Ingestion Notifier" \
-      org.opencontainers.image.description="Ingestion notifier image for Analytical Platform" \
+      org.opencontainers.image.title="Ingestion Notify" \
+      org.opencontainers.image.description="Ingestion notify image for Analytical Platform" \
       org.opencontainers.image.url="https://github.com/ministryofjustice/analytical-platform"
 
 COPY --chown=nobody:nobody --chmod=0755 src/var/task/ ${LAMBDA_TASK_ROOT}

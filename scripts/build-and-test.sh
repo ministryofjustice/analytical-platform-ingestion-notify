@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IMAGE_TAG="analytical-platform.service.justice.gov.uk/ingestion-notifier:local"
+IMAGE_TAG="analytical-platform.service.justice.gov.uk/ingestion-notify:local"
 CONTAINER_STRUCTURE_TEST_IMAGE="gcr.io/gcp-runtimes/container-structure-test:latest"
 
 if [[ "${REMOTE_CONTAINERS}" ]] && [[ "$(uname -m)" == "aarch64" ]]; then
