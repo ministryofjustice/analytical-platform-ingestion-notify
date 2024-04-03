@@ -5,7 +5,6 @@ import boto3
 from notifications_python_client.notifications import NotificationsAPIClient
 from slack_sdk import WebClient
 
-
 sm_client = boto3.client("secretsmanager")
 govuk_notify_api_key_secret = os.environ["GOVUK_NOTIFY_API_KEY_SECRET"]
 govuk_notify_api_key = sm_client.get_secret_value(SecretId=govuk_notify_api_key_secret)[
