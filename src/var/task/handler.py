@@ -124,11 +124,7 @@ def handler(event, context):  # pylint: disable=unused-argument
             if supplier_config[2]:
                 send_slack(
                     slack_channel=supplier_config[2],
-<<<<<<< Updated upstream
-                    message=f"File {file_name} from {supplier} has been transferred to {supplier_config[3]}.",
-=======
                     message=f"A file uploaded by `{supplier}` has been transferred to `{supplier_config[3]}`.\n  • `{file_name}`",
->>>>>>> Stashed changes
                 )
             else:
                 print(f"No Slack channel configured for {supplier}")
