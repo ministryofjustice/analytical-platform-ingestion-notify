@@ -33,7 +33,11 @@ def supplier_configuration(supplier):
         SecretId=f"ingestion/sftp/{supplier}/slack-channel"
     )["SecretString"]
 
-    return data_contact, technical_contact, slack_channel
+    target_bucket = sm_client.get_secret_value(
+        SecretId=f"ingestion/sftp/{supplier}/target-bucket"
+    )["SecretString"]
+
+    return data_contact, technical_contact, slack_channel, target_bucket
 
 
 def send_slack(slack_channel, message):
@@ -71,8 +75,7 @@ def handler(event, context):  # pylint: disable=unused-argument
                 ],
                 email_address=supplier_config[0],
                 personalisation={
-                    "file_name": file_name,
-                    "supplier": supplier,
+                    "filename": file_name
                 },
             )
 
@@ -83,7 +86,7 @@ def handler(event, context):  # pylint: disable=unused-argument
                 ],
                 email_address=supplier_config[1],
                 personalisation={
-                    "file_name": file_name,
+                    "filename": file_name,
                     "supplier": supplier,
                 },
             )
@@ -101,7 +104,32 @@ def handler(event, context):  # pylint: disable=unused-argument
             # This mode expects CSV style notifications from
             # the transfer Lambda
             # e.g, "transferred,${supplier}/${file_name},${timestamp}"
-            print(mode)
+            state, object_key, timestamp = event["message"].split(",")
+            supplier, file_name = object_key.split("/")[:2]
+            supplier_config = supplier_configuration(supplier=supplier)
+
+            # GOV.UK Notify Technical Contact
+            send_gov_uk_notify(
+                template=govuk_notify_templates[
+                    "sftp_transferred_file_technical_contact"
+                ],
+                email_address=supplier_config[1],
+                personalisation={
+                    "filename": file_name,
+                    "supplier": supplier,
+                    "targetlocation": supplier_config[3],
+                },
+            )
+
+            # Slack Technical Contact
+            if supplier_config[2]:
+                send_slack(
+                    slack_channel=supplier_config[2],
+                    message=f"File {file_name} from {supplier} has been transferred to {supplier_config[3]}.",
+                )
+            else:
+                print(f"No Slack channel configured for {supplier}")
+
         else:
             raise ValueError(f"Invalid mode: {mode}")
 
