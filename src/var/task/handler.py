@@ -70,13 +70,9 @@ def handler(event, context):  # pylint: disable=unused-argument
 
             # GOV.UK Notify Data Contact
             send_gov_uk_notify(
-                template=govuk_notify_templates[
-                    "sftp_quarantined_file_data_contact"
-                ],
+                template=govuk_notify_templates["sftp_quarantined_file_data_contact"],
                 email_address=supplier_config[0],
-                personalisation={
-                    "filename": file_name
-                },
+                personalisation={"filename": file_name},
             )
 
             # GOV.UK Notify Technical Contact
