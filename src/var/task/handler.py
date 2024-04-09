@@ -99,10 +99,9 @@ def handler(event, context):  # pylint: disable=unused-argument
         elif mode == "transferred":
             # This mode expects CSV style notifications from
             # the transfer Lambda
-            # e.g, "transferred,${supplier}/${file_name},${timestamp}"
-            state, object_key, timestamp = event[  # pylint: disable=unused-variable
-                "message"
-            ].split(",")
+            # e.g, "transferred,{supplier}/{file_name},{timestamp}"
+            message = event["Records"][0]["Sns"]["Message"]
+            state, object_key, timestamp = message.split(",")  # pylint: disable=unused-variable
             supplier, file_name = object_key.split("/")[:2]
             supplier_config = supplier_configuration(supplier=supplier)
 
