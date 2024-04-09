@@ -101,9 +101,7 @@ def handler(event, context):  # pylint: disable=unused-argument
             # the transfer Lambda
             # e.g, "transferred,{supplier}/{file_name},{timestamp}"
             message = event["Records"][0]["Sns"]["Message"]
-            state, object_key, timestamp = message.split(  # pylint: disable=unused-variable
-                ","
-            )
+            state, object_key, timestamp = message.split(",")  # pylint: disable=unused-variable
             supplier, file_name = object_key.split("/")[:2]
             supplier_config = supplier_configuration(supplier=supplier)
 
@@ -124,10 +122,10 @@ def handler(event, context):  # pylint: disable=unused-argument
             if supplier_config[2]:
                 send_slack(
                     slack_channel=supplier_config[2],
-                    message=f"A file uploaded by `{supplier}` has been transferred to `{supplier_config[3]}`.\n  • `{file_name}`",
+                    message=f"A file uploaded by `{supplier}` has been transferred to `{supplier_config[3]}`.\n  • `{file_name}`"
                 )
             else:
-                print(f"No Slack channel configured for {supplier}")
+                print(f"No Slack channel configured for `{supplier}`")
 
         else:
             raise ValueError(f"Invalid mode: {mode}")
