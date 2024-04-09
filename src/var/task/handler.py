@@ -101,7 +101,9 @@ def handler(event, context):  # pylint: disable=unused-argument
             # the transfer Lambda
             # e.g, "transferred,{supplier}/{file_name},{timestamp}"
             message = event["Records"][0]["Sns"]["Message"]
-            state, object_key, timestamp = message.split(",")  # pylint: disable=unused-variable
+            state, object_key, timestamp = message.split(  # pylint: disable=unused-variable
+                ","
+            )
             supplier, file_name = object_key.split("/")[:2]
             supplier_config = supplier_configuration(supplier=supplier)
 
