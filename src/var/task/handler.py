@@ -41,7 +41,6 @@ def send_slack(slack_channel, message):
         channel=slack_channel,
         text=message,
     )
-
     return response
 
 
@@ -67,7 +66,9 @@ def handler(event, context):  # pylint: disable=unused-argument
 
             # GOV.UK Notify Data Contact
             send_gov_uk_notify(
-                template=govuk_notify_templates["sftp_quarantined_file_data_contact"],
+                template=govuk_notify_templates[
+                    "sftp_quarantined_file_data_contact"
+                ],
                 email_address=supplier_config[0],
                 personalisation={
                     "file_name": file_name,
@@ -103,6 +104,8 @@ def handler(event, context):  # pylint: disable=unused-argument
             print(mode)
         else:
             raise ValueError(f"Invalid mode: {mode}")
+
+        return {"statusCode": 200, "body": json.dumps({"message": "Success"})}
     except ValueError as e:
         print(f"Configuration Error: {e}")
         return {"statusCode": 400, "body": json.dumps({"message": str(e)})}
