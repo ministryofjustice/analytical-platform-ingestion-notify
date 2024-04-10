@@ -94,7 +94,7 @@ def handler(event, context):  # pylint: disable=unused-argument
             )
 
             # Slack Technical Contact
-            if supplier_config[2]:
+            if supplier_config["slack_channel"]:
                 send_slack(
                     slack_channel=supplier_config["slack_channel"],
                     message=f"A file uploaded by `{supplier}` has been quarantined.\n  • `{file_name}`",
