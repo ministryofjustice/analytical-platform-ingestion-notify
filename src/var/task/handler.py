@@ -37,7 +37,12 @@ def supplier_configuration(supplier):
         SecretId=f"ingestion/sftp/{supplier}/target-bucket"
     )["SecretString"]
 
-    return data_contact, technical_contact, slack_channel, target_bucket
+    return {
+        "data_contact": data_contact,
+        "technical_contact": technical_contact,
+        "slack_channel": slack_channel,
+        "target_bucket": target_bucket,
+    }
 
 
 def send_slack(slack_channel, message):
@@ -71,7 +76,7 @@ def handler(event, context):  # pylint: disable=unused-argument
             # GOV.UK Notify Data Contact
             send_gov_uk_notify(
                 template=govuk_notify_templates["sftp_quarantined_file_data_contact"],
-                email_address=supplier_config[0],
+                email_address=supplier_config["data_contact"],
                 personalisation={"filename": file_name},
             )
 
@@ -80,7 +85,7 @@ def handler(event, context):  # pylint: disable=unused-argument
                 template=govuk_notify_templates[
                     "sftp_quarantined_file_technical_contact"
                 ],
-                email_address=supplier_config[1],
+                email_address=supplier_config["technical_contact"],
                 personalisation={
                     "filename": file_name,
                     "supplier": supplier,
@@ -90,8 +95,8 @@ def handler(event, context):  # pylint: disable=unused-argument
             # Slack Technical Contact
             if supplier_config[2]:
                 send_slack(
-                    slack_channel=supplier_config[2],
-                    message=f"File {file_name} from {supplier} has been quarantined.",
+                    slack_channel=supplier_config["slack_channel"],
+                    message=f"A file uploaded by `{supplier}` has been quarantined.\n  • `{file_name}`",
                 )
             else:
                 print(f"No Slack channel configured for {supplier}")
@@ -101,7 +106,7 @@ def handler(event, context):  # pylint: disable=unused-argument
             # the transfer Lambda
             # e.g, "transferred,{supplier}/{file_name},{timestamp}"
             message = event["Records"][0]["Sns"]["Message"]
-            state, object_key, timestamp = message.split(",")  # pylint: disable=unused-variable
+            _, object_key, _ = message.split(",")
             supplier, file_name = object_key.split("/")[:2]
             supplier_config = supplier_configuration(supplier=supplier)
 
@@ -110,19 +115,19 @@ def handler(event, context):  # pylint: disable=unused-argument
                 template=govuk_notify_templates[
                     "sftp_transferred_file_technical_contact"
                 ],
-                email_address=supplier_config[1],
+                email_address=supplier_config["technical_contact"],
                 personalisation={
                     "filename": file_name,
                     "supplier": supplier,
-                    "targetlocation": supplier_config[3],
+                    "targetlocation": supplier_config["target_bucket"],
                 },
             )
 
             # Slack Technical Contact
-            if supplier_config[2]:
+            if supplier_config["slack_channel"]:
                 send_slack(
-                    slack_channel=supplier_config[2],
-                    message=f"A file uploaded by `{supplier}` has been transferred to `{supplier_config[3]}`.\n  • `{file_name}`"
+                    slack_channel=supplier_config["slack_channel"],
+                    message=f"A file uploaded by `{supplier}` has been transferred to `{supplier_config['target_bucket']}`.\n  • `{file_name}`",
                 )
             else:
                 print(f"No Slack channel configured for `{supplier}`")
