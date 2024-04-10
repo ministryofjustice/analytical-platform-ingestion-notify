@@ -69,7 +69,8 @@ def handler(event, context):  # pylint: disable=unused-argument
         mode = os.environ.get("MODE")
         if mode == "quarantined":
             # This mode expects S3 bucket notifications via SNS
-            object_key = event["Records"][0]["s3"]["object"]["key"]
+            message = json.loads(event["Records"][0]["Sns"]["Message"])
+            object_key = message["Records"][0]["s3"]["object"]["key"]
             supplier, file_name = object_key.split("/")[:2]
             supplier_config = supplier_configuration(supplier=supplier)
 
