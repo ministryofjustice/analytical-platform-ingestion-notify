@@ -105,10 +105,10 @@ def handler(event, context):  # pylint: disable=unused-argument
         elif mode == "transferred":
             # This mode expects CSV style notifications from
             # the transfer Lambda
-            # e.g, "transferred,{supplier}/{file_name},{timestamp}"
+            # e.g, "transferred,{supplier}/{destination_object_key},{timestamp}"
             message = event["Records"][0]["Sns"]["Message"]
             _, object_key, _ = message.split(",")
-            supplier, file_name = object_key.split("/")[:2]
+            supplier, destination_object_key = object_key.split("/", 1)
             supplier_config = supplier_configuration(supplier=supplier)
 
             # GOV.UK Notify Technical Contact
@@ -118,7 +118,7 @@ def handler(event, context):  # pylint: disable=unused-argument
                 ],
                 email_address=supplier_config["technical_contact"],
                 personalisation={
-                    "filename": file_name,
+                    "filename": destination_object_key,
                     "supplier": supplier,
                     "targetlocation": supplier_config["target_bucket"],
                 },
@@ -128,7 +128,7 @@ def handler(event, context):  # pylint: disable=unused-argument
             if supplier_config["slack_channel"]:
                 send_slack(
                     slack_channel=supplier_config["slack_channel"],
-                    message=f"A file uploaded by `{supplier}` has been transferred to `{supplier_config['target_bucket']}`.\n  • `{file_name}`",
+                    message=f"A file uploaded by `{supplier}` has been transferred to `{supplier_config['target_bucket']}`.\n  • `{destination_object_key}`",
                 )
             else:
                 print(f"No Slack channel configured for `{supplier}`")
