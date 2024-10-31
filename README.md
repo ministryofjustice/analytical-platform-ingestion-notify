@@ -12,7 +12,7 @@ This image is used in the Analytical Platform Ingestion service. It is deployed 
 
 ### Debug
 
-Launch the container in a bash terminal:
+Launch a Bash terminal in the container:
 
 `make debug`
 
