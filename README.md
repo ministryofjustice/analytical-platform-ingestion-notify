@@ -8,19 +8,13 @@ This image is used in the Analytical Platform Ingestion service. It is deployed 
 
 ### Build
 
-```bash
-docker build --platform linux/amd64 --file Dockerfile --tag analytical-platform.service.justice.gov.uk/ingestion-notify:local .
-```
+`make build`
 
-### Run
+### Debug
 
-```bash
-docker run -it --rm \
-  --platform linux/amd64 \
-  --hostname ingestion-notify \
-  --name analytical-platform-ingestion-notify \
-  analytical-platform.service.justice.gov.uk/ingestion-notify:local
-```
+Launch the container in a bash terminal:
+
+`make debug`
 
 ## Versions
 
