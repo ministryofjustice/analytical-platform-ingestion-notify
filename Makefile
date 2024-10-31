@@ -9,7 +9,7 @@ build:
 debug: build
 	docker run -it --rm \
 		--platform linux/amd64 \
-		--hostname ingestion-scan \
+		--hostname ingestion-notify \
 		--name analytical-platform-ingestion-notify \
 		--entrypoint /bin/bash \
 		$(IMAGE_NAME):$(IMAGE_TAG)
