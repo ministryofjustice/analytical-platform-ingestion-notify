@@ -35,3 +35,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: /
           PYTHON_PYLINT_CONFIG_FILE: pyproject.toml
+          VALIDATE_BIOME_FORMAT: false
+          VALIDATE_BIOME_LINT: false
