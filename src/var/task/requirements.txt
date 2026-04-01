@@ -1,4 +1,4 @@
-boto3==1.42.69
-botocore==1.42.69
+boto3==1.42.72
+botocore==1.42.72
 notifications-python-client==10.0.1
 slack_sdk==3.41.0
