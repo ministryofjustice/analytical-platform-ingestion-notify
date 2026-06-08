@@ -1,3 +1,6 @@
+---
+name: Container Scan
+
 on:
   pull_request:
     branches:
@@ -13,6 +16,6 @@ jobs:
       id-token: write
       pull-requests: write
       security-events: write
-    uses: ministryofjustice/analytical-platform-github-actions/.github/workflows/reusable-container-scan.yml@feat/grype-scan # zizmor: ignore[unpinned-uses]
+    uses: ministryofjustice/analytical-platform-github-actions/.github/workflows/reusable-container-scan.yml@feat/grype-scan
     with:
       runtime: python
