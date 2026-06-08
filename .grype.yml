@@ -3,6 +3,6 @@
 # https://oss.anchore.com/docs/reference/grype/configuration/
 
 ignore:
-- vulnerability: CVE-2026-7210
+  - vulnerability: CVE-2026-7210
 
 
