@@ -13,6 +13,6 @@ jobs:
       id-token: write
       pull-requests: write
       security-events: write
-    uses: ministryofjustice/analytical-platform-github-actions/.github/workflows/reusable-container-scan.yml@feat/grype-scan
+    uses: ministryofjustice/analytical-platform-github-actions/.github/workflows/reusable-container-scan.yml@feat/grype-scan # zizmor: ignore[unpinned-uses]
     with:
       runtime: python
