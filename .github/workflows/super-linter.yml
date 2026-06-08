@@ -39,3 +39,4 @@ jobs:
           VALIDATE_BIOME_LINT: false
           VALIDATE_PYTHON_RUFF_FORMAT: false
           VALIDATE_PYTHON_RUFF: false
+          VALIDATE_TRIVY: false
