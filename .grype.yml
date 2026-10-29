@@ -20,6 +20,8 @@ ignore:
   - vulnerability: CVE-2026-11972
   # Python binary CVE, fix requires Python 3.15.0 which is not yet available as a Lambda base image.
   - vulnerability: GO-2026-5775
+  # Python binary CVE, fix requires Python 3.14.0b1 which is not yet available as a Lambda base image.
+  - vulnerability: CVE-2026-82049
   # go-chi/chi CVE in aws-lambda-rie binary, fix requires base image update - see README on how to check for updates.
   - vulnerability: GO-2026-5777
   # go-chi/chi CVE in aws-lambda-rie binary, fix requires base image update - see README on how to check for updates.
